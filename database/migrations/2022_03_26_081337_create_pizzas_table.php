@@ -13,8 +13,11 @@ class CreatePizzasTable extends Migration
      */
     public function up()
     {
-        Schema::create('pizzas', function (Blueprint $table) {
-            $table->id();
+        Schema::create('pizza', function (Blueprint $table) {
+            $table->id('id');
+            $table->string('titolo');
+            $table->longText('descrizione');
+            $table->string('img')->nullable();
             $table->timestamps();
         });
     }

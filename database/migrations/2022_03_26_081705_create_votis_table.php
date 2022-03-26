@@ -13,8 +13,9 @@ class CreateVotisTable extends Migration
      */
     public function up()
     {
-        Schema::create('votis', function (Blueprint $table) {
-            $table->id();
+        Schema::create('voti', function (Blueprint $table) {
+            $table->id('id');
+            $table->integer('rate');
             $table->timestamps();
         });
     }

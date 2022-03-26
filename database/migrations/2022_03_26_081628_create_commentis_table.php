@@ -13,8 +13,10 @@ class CreateCommentisTable extends Migration
      */
     public function up()
     {
-        Schema::create('commentis', function (Blueprint $table) {
-            $table->id();
+        Schema::create('commenti', function (Blueprint $table) {
+            $table->id('id');
+            $table->string('testo');
+            $table->unsignedBigInteger('utente_id');
             $table->timestamps();
         });
     }

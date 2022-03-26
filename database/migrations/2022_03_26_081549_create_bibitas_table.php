@@ -17,6 +17,7 @@ class CreateBibitasTable extends Migration
             $table->id('id');
             $table->string('titolo');
             $table->longText('descrizione');
+            $table->integer('prezzo');
             $table->string('img')->nullable();
             $table->timestamps();
         });

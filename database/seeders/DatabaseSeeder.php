@@ -15,6 +15,6 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call(PizzaTableSeeder::class);
-        //$this->call(InsalatonaTableSeeder::class);
+        $this->call(InsalatonaTableSeeder::class);
     }
 }

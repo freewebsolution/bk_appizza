@@ -31,6 +31,6 @@ class CreateUtentesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('utentes');
+        Schema::dropIfExists('utente');
     }
 }

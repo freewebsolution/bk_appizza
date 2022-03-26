@@ -28,6 +28,6 @@ class CreateCommentisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('commentis');
+        Schema::dropIfExists('commenti');
     }
 }

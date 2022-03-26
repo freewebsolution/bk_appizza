@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pizza;
+use http\Env\Response;
 use Illuminate\Http\Request;
 
 class PizzaController extends Controller
@@ -14,7 +15,8 @@ class PizzaController extends Controller
      */
     public function index()
     {
-        //
+        $pizze = Pizza::all();
+        return $pizze;
     }
 
     /**

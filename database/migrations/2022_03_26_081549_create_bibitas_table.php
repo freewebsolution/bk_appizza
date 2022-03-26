@@ -30,6 +30,6 @@ class CreateBibitasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bibitas');
+        Schema::dropIfExists('bibita');
     }
 }

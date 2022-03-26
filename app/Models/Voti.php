@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Voti extends Model
 {
     protected  $guarded = 'id';
+    protected $table = 'voti';
     use HasFactory;
 }

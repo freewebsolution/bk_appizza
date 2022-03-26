@@ -21,14 +21,14 @@ class InsalatonaTableSeeder extends Seeder
                         'descrizione' => $descrizione = 'Insalata Novella, Gentile, Rucola, Radicchio, pomodorini, oliver verdi, tonno, mozz. Fior di Latte, uova, cipolla di tropea, patate lesse, acciughe',
                         'prezzo' => $prezzo = 12.00,
                         'inevidenza' => $inevidenza = true,
-                        'img' => $img = 'https://picsum.photos/id/5/200/300'
+                        'img' => $img = '/assets/insalatone/nizzarda.jpg'
                     ],
                     [
                         'titolo' => $titolo = 'Iceberg',
                         'descrizione' => $descrizione = 'Insalata Iceberg croccante, insalatina dolce o valeriana, rucola, foglie di spinacino, semi di canapa, semi di girasole, ribes rosso disidratato',
                         'prezzo' => $prezzo = 8.00,
                         'inevidenza' => $inevidenza = false,
-                        'img' => $img = 'https://picsum.photos/id/3/200/300'
+                        'img' => $img = '/assets/insalatone/iceberg.jpg'
                     ]
 
 

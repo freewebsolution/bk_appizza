@@ -28,6 +28,6 @@ class CreateVotisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('votis');
+        Schema::dropIfExists('voti');
     }
 }

@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::resource('pizze',\App\Http\Controllers\PizzaController::class);
+Route::resource('insalatone',\App\Http\Controllers\InsalatonaController::class);
+Route::get('commenti',[\App\Http\Controllers\CommentiController::class,'index']);
+Route::get('utenti',[\App\Http\Controllers\UtenteController::class,'index']);
+Route::get('voti',[\App\Http\Controllers\VotiController::class,'index']);

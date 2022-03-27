@@ -16,7 +16,7 @@ class PizzaController extends Controller
     public function index()
     {
         $pizze = Pizza::all();
-        return $pizze;
+        return view('pizze.index', compact('pizze'));
     }
 
     /**
@@ -32,7 +32,7 @@ class PizzaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -43,7 +43,7 @@ class PizzaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Pizza  $pizza
+     * @param \App\Models\Pizza $pizza
      * @return \Illuminate\Http\Response
      */
     public function show(Pizza $pizza)
@@ -54,7 +54,7 @@ class PizzaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Pizza  $pizza
+     * @param \App\Models\Pizza $pizza
      * @return \Illuminate\Http\Response
      */
     public function edit(Pizza $pizza)
@@ -65,8 +65,8 @@ class PizzaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Pizza  $pizza
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Pizza $pizza
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Pizza $pizza)
@@ -77,7 +77,7 @@ class PizzaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Pizza  $pizza
+     * @param \App\Models\Pizza $pizza
      * @return \Illuminate\Http\Response
      */
     public function destroy(Pizza $pizza)

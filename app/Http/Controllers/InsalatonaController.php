@@ -15,7 +15,7 @@ class InsalatonaController extends Controller
     public function index()
     {
         $insalatone = Insalatona::all();
-        return $insalatone;
+        return view('insalatone.index',compact('insalatone'));
     }
 
     /**

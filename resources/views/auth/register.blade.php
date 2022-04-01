@@ -38,6 +38,22 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <label for="role" class="col-md-4 col-form-label text-md-end">{{ __('Assign Role') }}</label>
+
+                            <div class="col-md-6">
+                                <select name="role" id="role" class="form-control @error('role') is-invalid @enderror" required>
+                                    <option value="manager">Manager</option>
+                                    <option value="ospite">Ospite</option>
+                                </select>
+
+                                @error('role')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
 
                         <div class="row mb-3">
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>

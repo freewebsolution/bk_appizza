@@ -19,10 +19,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::group(array('prefix'=>'admin','namespace'=>'Admin','middleware'=>'auth'), function(){
-    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(array('prefix'=>'admin','namespace'=>'Admin','middleware'=>'manager'), function(){
+    Route::get('', [\App\Http\Controllers\HomeController::class,'index'])->name('home');
     Route::get('pizze',[\App\Http\Controllers\PizzaController::class,'index'])->name('pizze');
     Route::get('insalatone',[\App\Http\Controllers\InsalatonaController::class,'index'])->name('insalatone');
     Route::get('users',[\App\Http\Controllers\UtenteController::class,'index'])->name('users');
+    Route::get('roles',[\App\Http\Controllers\RolesController::class,'index'])->name('roles');
+    Route::get('roles/create',[\App\Http\Controllers\RolesController::class,'create']);
+    Route::get('roles/create',[\App\Http\Controllers\RolesController::class,'store']);
 });
 

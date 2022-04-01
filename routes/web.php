@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,18 +15,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login
+    ');
 });
 
 Auth::routes();
 
 Route::group(array('prefix'=>'admin','namespace'=>'Admin','middleware'=>'manager'), function(){
     Route::get('', [\App\Http\Controllers\HomeController::class,'index'])->name('home');
-    Route::get('pizze',[\App\Http\Controllers\PizzaController::class,'index'])->name('pizze');
-    Route::get('insalatone',[\App\Http\Controllers\InsalatonaController::class,'index'])->name('insalatone');
-    Route::get('users',[\App\Http\Controllers\UtenteController::class,'index'])->name('users');
-    Route::get('roles',[\App\Http\Controllers\RolesController::class,'index'])->name('roles');
-    Route::get('roles/create',[\App\Http\Controllers\RolesController::class,'create']);
-    Route::get('roles/create',[\App\Http\Controllers\RolesController::class,'store']);
+    Route::get('/pizze',[\App\Http\Controllers\PizzaController::class,'index'])->name('pizze');
+    Route::get('/insalatone',[\App\Http\Controllers\InsalatonaController::class,'index'])->name('insalatone');
+    Route::get('/users',[\App\Http\Controllers\UtenteController::class,'index'])->name('users');
+    Route::get('/users/{id?}/edit',[\App\Http\Controllers\UtenteController::class,'edit']);
+    Route::post('/users/{id?}/edit',[\App\Http\Controllers\UtenteController::class,'update']);
+    Route::get('/roles',[\App\Http\Controllers\RolesController::class,'index'])->name('roles');
+    Route::get('/roles/create',[\App\Http\Controllers\RolesController::class,'create']);
+    Route::post('/roles/create',[\App\Http\Controllers\RolesController::class,'store']);
 });
 

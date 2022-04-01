@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Users')
+@section('title','Roles')
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -13,33 +13,20 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        @if($users->isEmpty())
-                            <p>Non ci sono Utenti!</p>
+                        @if($roles->isEmpty())
+                            <p>Non ci sono Ruoli!</p>
                         @else
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <td>Id</td>
                                         <td>Nome</td>
-                                        <td>Email</td>
-                                        <td>Ruolo</td>
-                                        <td>Action</td>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($users as $user)
+                                    @foreach($roles as $role)
                                         <tr>
-                                            <td>{{$user->id}}</td>
-                                            <td>{{$user->name}}</td>
-                                            <td>
-                                                <a href="{{action([\App\Http\Controllers\UtenteController::class,'edit',],$user->id)}}">{{$user->email}}</a>
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                <span style="color: #0d6efd"><i class="fa-solid fa-pen-to-square"></i></span>
-                                                <span style="color: red"><i class="fa-solid fa-trash-can"></i></span>
-                                            </td>
+                                            <td>{{$role->name}}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -53,4 +40,5 @@
         </div>
     </div>
 @endsection
+
 

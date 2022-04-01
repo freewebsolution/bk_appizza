@@ -20,7 +20,6 @@ class LoginController extends Controller
     |
     */
 
-
     use AuthenticatesUsers {
 
         logout as performLogout;

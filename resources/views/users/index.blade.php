@@ -35,10 +35,19 @@
                                             <td>
                                                 <a href="{{action([\App\Http\Controllers\UtenteController::class,'edit',],$user->id)}}">{{$user->email}}</a>
                                             </td>
-                                            <td></td>
                                             <td>
-                                                <span style="color: #0d6efd"><i class="fa-solid fa-pen-to-square"></i></span>
-                                                <span style="color: red"><i class="fa-solid fa-trash-can"></i></span>
+                                                @foreach($user->roles as $role)
+                                                    @if($role->name === 'Manager')
+                                                        <span class="badge bg-danger">
+                                                            @else
+                                                                <span class="badge bg-primary">
+                                                    @endif
+                                                                    {{ $role->name }}</span>
+                                                        @endforeach
+                                            </td>
+                                            <td>
+                                                <span style="color: red"><i
+                                                        class="fa-solid fa-trash-can"></i></span>
                                             </td>
                                         </tr>
                                     @endforeach

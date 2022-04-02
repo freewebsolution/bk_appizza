@@ -5,8 +5,8 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('Utenti') }}</div>
 
+                    <div class="card-header">{{ __('Utenti') }}</div>
                     <div class="card-body">
                         @if (session('status'))
                             <div class="alert alert-success" role="alert">
@@ -35,9 +35,17 @@
                                             <td>
                                                 <a href="{{action([\App\Http\Controllers\UtenteController::class,'edit',],$user->id)}}">{{$user->email}}</a>
                                             </td>
-                                            <td></td>
                                             <td>
-                                                <span style="color: #0d6efd"><i class="fa-solid fa-pen-to-square"></i></span>
+                                                @foreach($user->roles as $role)
+                                                    @if($role->name === 'Manager')
+                                                    <span class="badge bg-danger">
+                                                    @else
+                                                        <span class="badge bg-success">
+                                                    @endif
+                                                            {{$role->name}}</span>
+                                                @endforeach
+                                            </td>
+                                            <td>
                                                 <span style="color: red"><i class="fa-solid fa-trash-can"></i></span>
                                             </td>
                                         </tr>

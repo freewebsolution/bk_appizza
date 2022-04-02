@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('Modifica Utenti') }}</div>
+                    <div class="card-header">{{ __('Utente') }} > {{$user->name}}</div>
 
                     <div class="card-body">
                         <form method="post">

@@ -49,7 +49,7 @@ class LoginController extends Controller
 
         $this->performLogout($request);
 
-        return redirect()->route('login');
+        return view('frontend.home');
 
     }
 }

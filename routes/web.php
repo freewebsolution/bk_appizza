@@ -15,14 +15,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('auth.login
-    ');
+    return view('frontend.home');
 });
-
+Route::get('home', function () {
+    return view('frontend.home');
+});
 Auth::routes();
+//Auth::routes([
+//    'register' => false, // Registration Routes...
+//    'reset' => false, // Password Reset Routes...
+//    'verify' => false, // Email Verification Routes...
+//]);
+if (!env('ALLOW_REGISTRATION', false)) {
+    Route::any('/register', function() {
+        abort(403);
+    });
+}
 
 Route::group(array('prefix'=>'admin','namespace'=>'Admin','middleware'=>'manager'), function(){
     Route::get('', [\App\Http\Controllers\HomeController::class,'index'])->name('home');
+    Route::get('/home', [\App\Http\Controllers\HomeController::class,'index'])->name('home');
     Route::get('/pizze',[\App\Http\Controllers\PizzaController::class,'index'])->name('pizze');
     Route::get('/insalatone',[\App\Http\Controllers\InsalatonaController::class,'index'])->name('insalatone');
     Route::get('/users',[\App\Http\Controllers\UtenteController::class,'index'])->name('users');

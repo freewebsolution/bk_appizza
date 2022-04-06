@@ -6,7 +6,10 @@
             <div class="col-md-12">
                 <div class="card">
 
-                    <div class="card-header">{{ __('Utenti') }}</div>
+                    <div class="card-header">
+                        {{ __('Utenti') }}
+                        <span class="float-end"><a class="btn btn-success btn-sm" href="{{action([\App\Http\Controllers\UtenteController::class,'create'])}}"><i class="fa-solid fa-circle-plus"></i></a></span>
+                    </div>
                     <div class="card-body">
                         @if (session('status'))
                             <div class="alert alert-success" role="alert">
@@ -46,7 +49,13 @@
                                                 @endforeach
                                             </td>
                                             <td>
-                                                <span style="color: red"><i class="fa-solid fa-trash-can"></i></span>
+                                                <form action="{{action([\App\Http\Controllers\UtenteController::class,'destroy'],$user->id)}}" method="get">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button onclick="return confirm('Sei sicuro di voler eliminare la pizza: {{$user->name}} ?')" class="btn btn-danger btn-sm" type="submit">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\insalatonaEditFormRequest;
+use App\Http\Requests\InsalatonaFormRequest;
 use App\Models\Insalatona;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,7 @@ class InsalatonaController extends Controller
      */
     public function index()
     {
-        $insalatone = Insalatona::all();
+        $insalatone = Insalatona::paginate(10);
         return view('insalatone.index',compact('insalatone'));
     }
 
@@ -25,7 +27,7 @@ class InsalatonaController extends Controller
      */
     public function create()
     {
-        //
+        return view('insalatone.create');
     }
 
     /**
@@ -34,9 +36,22 @@ class InsalatonaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(InsalatonaFormRequest $request)
     {
-        //
+        $insalatona = new Insalatona(array(
+            'titolo' => $request->get('titolo'),
+            'descrizione' => $request->get('descrizione'),
+            'prezzo' => $request->get('prezzo'),
+            'inevidenza' => $request->get('inevidenza'),
+        ));
+        $thumb = $_FILES['image']['name'];
+        $thumb = substr($thumb, 0, strpos($thumb, "."));
+        $imageName = $thumb . ' .' . $request->image->extension();
+        $request->image->move(public_path('assets/insalatone'), $imageName);
+        $data = $imageName;
+        $insalatona->img = '/assets/insalatone/' . $data;
+        $insalatona->save();
+        return redirect('/admin/insalatone')->with('status', 'insalatona aggiunta correttamente');
     }
 
     /**
@@ -56,9 +71,10 @@ class InsalatonaController extends Controller
      * @param  \App\Models\Insalatona  $insalatona
      * @return \Illuminate\Http\Response
      */
-    public function edit(Insalatona $insalatona)
+    public function edit($id)
     {
-        //
+        $insalatona = Insalatona::whereId($id)->firstOrFail();
+        return view('insalatone.edit',compact('insalatona'));
     }
 
     /**
@@ -68,10 +84,34 @@ class InsalatonaController extends Controller
      * @param  \App\Models\Insalatona  $insalatona
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Insalatona $insalatona)
+    public function update($id, insalatonaEditFormRequest $request)
     {
-        //
+        $insalatona = Insalatona::whereId($id)->firstOrFail();
+        $insalatona->titolo = $request->get('titolo');
+        $insalatona->descrizione = $request->get('descrizione');
+        $insalatona->prezzo = $request->get('prezzo');
+        $insalatona->inevidenza = $request->get('inevidenza');
+        if($request->hasFile('image')){
+            $nomeImg = explode('/assets/insalatone', $insalatona->img);
+            $nomeImg = $nomeImg[1];
+            if (file_exists(public_path("assets/insalatone/" . $nomeImg))) {
+                unlink(public_path("assets/insalatone/" . $nomeImg));
+            }
+            $thumb = $_FILES['image']['name'];
+            $thumb = substr($thumb, 0, strpos($thumb, "."));
+            $imageName = $thumb . ' .' . $request->image->extension();
+            $request->image->move(public_path('assets/insalatone'), $imageName);
+            $data = $imageName;
+            $insalatona->img = '/assets/insalatone/' . $data;
+        }
+        else{
+            $insalatona->img = $request->get('img');
+        }
+
+        $insalatona->save();
+        return redirect(action([InsalatonaController::class, 'edit'], $insalatona->id))->with('status', 'insalatona modificata  correttamente');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -79,8 +119,18 @@ class InsalatonaController extends Controller
      * @param  \App\Models\Insalatona  $insalatona
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Insalatona $insalatona)
+    public function destroy($id)
     {
-        //
+        {
+            $insalatona = Insalatona::whereId($id)->firstOrFail();
+            $insalatona->delete();
+            $nomeImg = explode('/assets/insalatone', $insalatona->img);
+            $nomeImg = $nomeImg[1];
+            if (file_exists(public_path("assets/insalatone/" . $nomeImg))) {
+                unlink(public_path("assets/insalatone/" . $nomeImg));
+            }
+            return redirect('/admin/insalatone')->with('status', 'La insalatona: ' . $insalatona->name . ' è stata eliminata con successo');
+        }
     }
+
 }

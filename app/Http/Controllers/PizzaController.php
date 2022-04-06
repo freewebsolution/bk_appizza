@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PizzaEditFormRequest;
+use App\Http\Requests\PizzaFormRequest;
 use App\Models\Pizza;
 use http\Env\Response;
 use Illuminate\Http\Request;
@@ -15,7 +17,7 @@ class PizzaController extends Controller
      */
     public function index()
     {
-        $pizze = Pizza::all();
+        $pizze = Pizza::paginate(10);
         return view('pizze.index', compact('pizze'));
     }
 
@@ -26,7 +28,7 @@ class PizzaController extends Controller
      */
     public function create()
     {
-        //
+        return view('pizze.create');
     }
 
     /**
@@ -35,9 +37,22 @@ class PizzaController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PizzaFormRequest $request)
     {
-        //
+        $pizza = new Pizza(array(
+            'titolo' => $request->get('titolo'),
+            'descrizione' => $request->get('descrizione'),
+            'prezzo' => $request->get('prezzo'),
+            'inevidenza' => $request->get('inevidenza'),
+        ));
+        $thumb = $_FILES['image']['name'];
+        $thumb = substr($thumb, 0, strpos($thumb, "."));
+        $imageName = $thumb . ' .' . $request->image->extension();
+        $request->image->move(public_path('assets/pizze'), $imageName);
+        $data = $imageName;
+        $pizza->img = '/assets/pizze/' . $data;
+        $pizza->save();
+        return redirect('/admin/pizze')->with('status', 'Pizza aggiunta correttamente');
     }
 
     /**
@@ -48,7 +63,7 @@ class PizzaController extends Controller
      */
     public function show(Pizza $pizza)
     {
-        //
+
     }
 
     /**
@@ -57,9 +72,10 @@ class PizzaController extends Controller
      * @param \App\Models\Pizza $pizza
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pizza $pizza)
+    public function edit($id)
     {
-        //
+        $pizza = Pizza::whereId($id)->firstOrFail();
+        return view('pizze.edit', compact('pizza'));
     }
 
     /**
@@ -69,9 +85,32 @@ class PizzaController extends Controller
      * @param \App\Models\Pizza $pizza
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pizza $pizza)
+    public function update($id, PizzaEditFormRequest $request)
     {
-        //
+        $pizza = Pizza::whereId($id)->firstOrFail();
+        $pizza->titolo = $request->get('titolo');
+        $pizza->descrizione = $request->get('descrizione');
+        $pizza->prezzo = $request->get('prezzo');
+        $pizza->inevidenza = $request->get('inevidenza');
+        if($request->hasFile('image')){
+            $nomeImg = explode('/assets/pizze', $pizza->img);
+            $nomeImg = $nomeImg[1];
+            if (file_exists(public_path("assets/pizze/" . $nomeImg))) {
+                unlink(public_path("assets/pizze/" . $nomeImg));
+            }
+            $thumb = $_FILES['image']['name'];
+            $thumb = substr($thumb, 0, strpos($thumb, "."));
+            $imageName = $thumb . ' .' . $request->image->extension();
+            $request->image->move(public_path('assets/pizze'), $imageName);
+            $data = $imageName;
+            $pizza->img = '/assets/pizze/' . $data;
+        }
+        else{
+            $pizza->img = $request->get('img');
+        }
+
+        $pizza->save();
+        return redirect(action([PizzaController::class, 'edit'], $pizza->id))->with('status', 'Pizza modificata  correttamente');
     }
 
     /**
@@ -80,8 +119,15 @@ class PizzaController extends Controller
      * @param \App\Models\Pizza $pizza
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pizza $pizza)
+    public function destroy($id)
     {
-        //
+        $pizza = Pizza::whereId($id)->firstOrFail();
+        $pizza->delete();
+        $nomeImg = explode('/assets/pizze', $pizza->img);
+        $nomeImg = $nomeImg[1];
+        if (file_exists(public_path("assets/pizze/" . $nomeImg))) {
+            unlink(public_path("assets/pizze/" . $nomeImg));
+        }
+        return redirect('/admin/pizze')->with('status', 'La pizza : ' . $pizza->name . ' è stata eliminata con successo');
     }
 }

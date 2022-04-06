@@ -1,11 +1,14 @@
 @extends('layouts.app')
-@section('title','Insalatone')
+@section('title','Pizze')
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('Insalatone') }}</div>
+                    <div class="card-header">
+                        {{ __('Insalatone') }}
+                        <span class="float-end"><a class="btn btn-success btn-sm" href="{{action([\App\Http\Controllers\InsalatonaController::class,'create'])}}"><i class="fa-solid fa-circle-plus"></i></a></span>
+                    </div>
 
                     <div class="card-body">
                         @if (session('status'))
@@ -26,6 +29,7 @@
                                         <td>Descrizione</td>
                                         <td>Prezzo</td>
                                         <td>Evidenza</td>
+                                        <td>Action</td>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -33,14 +37,35 @@
                                         <tr>
                                             <td>{{$insalatona->id}}</td>
                                             <td><img width="100" height="100" src="{{$insalatona->img}}" alt="img"></td>
-                                            <td>{{$insalatona->titolo}}</td>
+                                            <td>
+                                                <a href="{{action([\App\Http\Controllers\InsalatonaController::class,'edit'],$insalatona->id)}}">{{$insalatona->titolo}}</a>
+                                            </td>
                                             <td>{{$insalatona->descrizione}}</td>
-                                            <td>{{$insalatona->prezzo}}</td>
-                                            <td>{{$insalatona->evidenza}}</td>
+                                            <td>{{sprintf('%.2f',$insalatona->prezzo)}}€</td>
+                                            <td>
+                                                @if($insalatona->inevidenza === 1)
+                                                    <span style="color: green">Yes</span>
+                                                @else
+                                                    <span style="color: red">No</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <form action="{{action([\App\Http\Controllers\InsalatonaController::class,'destroy'],$insalatona->id)}}" method="get">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button onclick="return confirm('Sei sicuro di voler eliminare la insalatona: {{$insalatona->titolo}} ?')" class="btn btn-danger btn-sm" type="submit">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                 </table>
+                                {{-- Pagination --}}
+                                <div class="d-flex justify-content-center">
+                                    {!! $insalatone->links() !!}
+                                </div>
                             </div>
                         @endif
 

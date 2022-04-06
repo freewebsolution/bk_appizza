@@ -67,10 +67,11 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <div class="col-lg-10 col-lg-offset-2">
-                                        <button type="reset" class="btn btn-default">Cancel</button>
-                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                <div class="form-group mt-3 mb-3">
+                                    <div class="col-lg-12 col-lg-offset-2">
+                                        <button type="reset" class="btn btn-warning"><i class="fa-solid fa-rectangle-xmark"></i></button>
+                                        <button type="submit" class="btn btn-success"><i class="fa-solid fa-check"></i></button>
+                                        <a class="btn btn-danger float-end" href="/admin/users"><i class="fa-solid fa-backward"></i></a>
                                     </div>
                                 </div>
                         </form>

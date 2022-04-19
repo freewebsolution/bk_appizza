@@ -26,6 +26,7 @@
                                         <td>Id</td>
                                         <td>Img</td>
                                         <td>Titolo</td>
+                                        <td>Rate</td>
                                         <td>Descrizione</td>
                                         <td>Prezzo</td>
                                         <td>Evidenza</td>
@@ -39,6 +40,11 @@
                                             <td><img width="100" height="100" src="{{$insalatona->img}}" alt="img"></td>
                                             <td>
                                                 <a href="{{action([\App\Http\Controllers\InsalatonaController::class,'edit'],$insalatona->id)}}">{{$insalatona->titolo}}</a>
+                                            </td>
+                                            <td style="white-space: nowrap">
+                                                @if($insalatona->voti->count('rate') > 0)
+                                                    <i class="fa-solid fa-star gold"></i>{{($insalatona->voti->sum('rate')/$insalatona->voti->count('rate'))}}
+                                                @endif
                                             </td>
                                             <td>{{$insalatona->descrizione}}</td>
                                             <td>{{sprintf('%.2f',$insalatona->prezzo)}}€</td>
@@ -57,11 +63,18 @@
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </form>
+                                                <a href="{{action([\App\Http\Controllers\CommentiController::class,'create'])}}"><i class="fa-solid fa-comment-sms fa fa-2x mt-2"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                 </table>
+                                <div class="form-group mt-3 mb-3">
+                                    <div class="col-lg-12 col-lg-offset-2">
+                                        <a class="btn btn-danger float-end" href="{{ URL::previous() }}"><i
+                                                class="fa-solid fa-backward"></i></a>
+                                    </div>
+                                </div>
                                 {{-- Pagination --}}
                                 <div class="d-flex justify-content-center">
                                     {!! $insalatone->links() !!}

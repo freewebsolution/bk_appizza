@@ -26,6 +26,7 @@
                                         <td>Id</td>
                                         <td>Img</td>
                                         <td>Titolo</td>
+                                        <td>Rate</td>
                                         <td>Descrizione</td>
                                         <td>Prezzo</td>
                                         <td>Evidenza</td>
@@ -39,6 +40,11 @@
                                             <td><img width="100" height="100" src="{{$pizza->img}}" alt="img"></td>
                                             <td>
                                                 <a href="{{action([\App\Http\Controllers\PizzaController::class,'edit'],$pizza->id)}}">{{$pizza->titolo}}</a>
+                                            </td>
+                                            <td style="white-space: nowrap">
+                                                @if($pizza->voti->count('rate') > 0)
+                                                    <i class="fa-solid fa-star gold"></i>{{($pizza->voti->sum('rate')/$pizza->voti->count('rate'))}}
+                                                @endif
                                             </td>
                                             <td>{{$pizza->descrizione}}</td>
                                             <td>{{sprintf('%.2f',$pizza->prezzo)}}€</td>
@@ -62,6 +68,12 @@
                                     @endforeach
                                     </tbody>
                                 </table>
+                                <div class="form-group mt-3 mb-3">
+                                    <div class="col-lg-12 col-lg-offset-2">
+                                        <a class="btn btn-danger float-end" href="{{ URL::previous() }}"><i
+                                                class="fa-solid fa-backward"></i></a>
+                                    </div>
+                                </div>
                                 {{-- Pagination --}}
                                 <div class="d-flex justify-content-center">
                                     {!! $pizze->links() !!}

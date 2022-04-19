@@ -12,7 +12,7 @@ use Spatie\Permission\Models\Role;
 class UtenteController extends Controller
 {
     public function index(){
-        $users = User::all();
+        $users = User::paginate(10);
         return view('users.index',compact('users'));
     }
     public function create()
@@ -25,7 +25,7 @@ class UtenteController extends Controller
         $user = new User(array(
             'name'=>$request->get('name'),
             'email'=>$request->get('email'),
-            'password'=>$request->get('password'),
+            'password'=>Hash::make($request['password']),
             'role'=>$request->get('role')
         ));
         $user->save();

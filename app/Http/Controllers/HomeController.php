@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Commenti;
+use App\Models\Insalatona;
+use App\Models\Pizza;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +27,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $commenti = Commenti::all();
+        $pizze = Pizza::all();
+        $insalatone = Insalatona::all();
+        $users = User::all();
+        return view('dashboard', compact('commenti','pizze','insalatone','users'));
     }
 }

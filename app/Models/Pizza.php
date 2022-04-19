@@ -10,5 +10,13 @@ class Pizza extends Model
     protected $table= 'pizza';
     protected  $guarded = ['id'];
 
+    public function comments()
+    {
+        return $this->hasMany(Commenti::class,'pizza_id','id');
+    }
+    public function voti()
+    {
+        return $this->hasMany(Voti::class,'pizza_id','id');
+    }
     use HasFactory;
 }

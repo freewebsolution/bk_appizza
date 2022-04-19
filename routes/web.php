@@ -56,5 +56,11 @@ Route::group(array('prefix'=>'admin','namespace'=>'Admin','middleware'=>'manager
     Route::get('/roles',[\App\Http\Controllers\RolesController::class,'index'])->name('roles');
     Route::get('/roles/create',[\App\Http\Controllers\RolesController::class,'create']);
     Route::post('/roles/create',[\App\Http\Controllers\RolesController::class,'store']);
+    Route::get('/commenti',[\App\Http\Controllers\CommentiController::class,'index']);
+    Route::get('/commenti/{id?}/edit',[\App\Http\Controllers\CommentiController::class,'edit']);
+    Route::get('/commenti/create',[\App\Http\Controllers\CommentiController::class,'create']);
+    Route::post('/commenti/{id?}/edit',[\App\Http\Controllers\CommentiController::class,'update']);
+    Route::post('/commenti/create',[\App\Http\Controllers\CommentiController::class,'store']);
+    Route::get('/commenti/{id?}/delete',[\App\Http\Controllers\CommentiController::class,'destroy']);
 });
 

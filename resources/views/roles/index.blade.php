@@ -31,6 +31,12 @@
                                     @endforeach
                                     </tbody>
                                 </table>
+                                <div class="form-group mt-3 mb-3">
+                                    <div class="col-lg-12 col-lg-offset-2">
+                                        <a class="btn btn-danger float-end" href="{{ URL::previous() }}"><i
+                                                class="fa-solid fa-backward"></i></a>
+                                    </div>
+                                </div>
                             </div>
                         @endif
 

@@ -21562,5 +21562,12 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.gold{
+    color:#e59819 ;
+}
+.white{
+    background:#fff;
+    //border:1px solid #e59819;
+}
 
 

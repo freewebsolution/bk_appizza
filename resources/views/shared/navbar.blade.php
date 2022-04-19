@@ -32,6 +32,9 @@
                             <a class="dropdown-item" href="/admin/users">
                                 {{ __('Users') }}
                             </a>
+                            <a class="dropdown-item" href="/admin/commenti">
+                                {{ __('Commenti') }}
+                            </a>
                             <a class="dropdown-item" href="/admin/roles">
                                 {{ __('Ruoli') }}
                             </a>

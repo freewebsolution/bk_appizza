@@ -18,6 +18,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    protected $table = 'users';
     protected $fillable = [
         'name',
         'email',
@@ -45,5 +46,14 @@ class User extends Authenticatable
     public function isAdministrator()
     {
         return $this->hasRole('Manager');
+    }
+    public function comments()
+    {
+        return $this->hasMany(Commenti::class);
+    }
+
+    public function voti()
+    {
+        return $this->belongsTo(Voti::class);
     }
 }

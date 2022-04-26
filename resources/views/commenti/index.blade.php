@@ -51,8 +51,21 @@
 
                                                 <h5>{{$commento->testo}}</h5>
                                                 <h6 class="text-muted"><i
-                                                        class="fa-solid fa-user-astronaut"></i>
+                                                        class="fa-solid fa-user-astronaut">
+
+                                                    </i>
                                                     {{$commento->user->name}}
+                                                    <i class="fa-solid fa-calendar-days me-1 ms-2"></i>
+                                                    @if($commento->updated_at)
+                                                        {{date('d-m-Y', strtotime($commento->updated_at))}}
+                                                    @else
+                                                        {{date('d-m-Y', strtotime($commento->created_at))}}
+                                                    @endif
+                                                    @if($commento->voti->updated_at)
+                                                        <i class="fa-solid fa-star-half-stroke me-1 ms-2"></i>
+                                                    Modified:    {{date('d-m-Y', strtotime($commento->voti->updated_at))}}
+                                                    @endif
+
                                                 </h6>
                                             </div>
                                             @if(Auth::user()->name === $commento->user->name)

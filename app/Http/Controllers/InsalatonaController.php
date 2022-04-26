@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\insalatonaEditFormRequest;
 use App\Http\Requests\InsalatonaFormRequest;
+use App\Models\Commenti;
 use App\Models\Insalatona;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InsalatonaController extends Controller
 {
@@ -17,7 +20,7 @@ class InsalatonaController extends Controller
     public function index()
     {
         $insalatone = Insalatona::paginate(10);
-        return view('insalatone.index',compact('insalatone'));
+        return view('insalatone.index', compact('insalatone'));
     }
 
     /**
@@ -33,7 +36,7 @@ class InsalatonaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(InsalatonaFormRequest $request)
@@ -57,31 +60,43 @@ class InsalatonaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Insalatona  $insalatona
+     * @param \App\Models\Insalatona $insalatona
      * @return \Illuminate\Http\Response
      */
-    public function show(Insalatona $insalatona)
+    public function show($name)
     {
-        //
+        $insalatona = Insalatona::where(['titolo' => $name])->firstOrFail();
+        $commenti = $insalatona
+            ->comments()
+            ->orderByRaw('IF(user_id = ?,1,0) DESC', [auth()->id()])
+            ->paginate(10);
+        $auth = Commenti::select('user_id')
+            ->where([
+                ['user_id', '=', Auth::id()],
+                ['insalatona_id', '=', $insalatona->id]
+            ])
+            ->first();
+        $voti = $insalatona->voti()->get();
+        return view('insalatone.show', compact('insalatona', 'commenti', 'voti','auth'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Insalatona  $insalatona
+     * @param \App\Models\Insalatona $insalatona
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $insalatona = Insalatona::whereId($id)->firstOrFail();
-        return view('insalatone.edit',compact('insalatona'));
+        return view('insalatone.edit', compact('insalatona'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Insalatona  $insalatona
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Insalatona $insalatona
      * @return \Illuminate\Http\Response
      */
     public function update($id, insalatonaEditFormRequest $request)
@@ -91,7 +106,7 @@ class InsalatonaController extends Controller
         $insalatona->descrizione = $request->get('descrizione');
         $insalatona->prezzo = $request->get('prezzo');
         $insalatona->inevidenza = $request->get('inevidenza');
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             $nomeImg = explode('/assets/insalatone', $insalatona->img);
             $nomeImg = $nomeImg[1];
             if (file_exists(public_path("assets/insalatone/" . $nomeImg))) {
@@ -103,8 +118,7 @@ class InsalatonaController extends Controller
             $request->image->move(public_path('assets/insalatone'), $imageName);
             $data = $imageName;
             $insalatona->img = '/assets/insalatone/' . $data;
-        }
-        else{
+        } else {
             $insalatona->img = $request->get('img');
         }
 
@@ -116,7 +130,7 @@ class InsalatonaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Insalatona  $insalatona
+     * @param \App\Models\Insalatona $insalatona
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

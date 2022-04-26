@@ -41,12 +41,14 @@ Route::group(array('prefix'=>'admin','namespace'=>'Admin','middleware'=>'manager
     Route::post('/pizze/{id?}/edit',[\App\Http\Controllers\PizzaController::class,'update']);
     Route::get('/pizze/create',[\App\Http\Controllers\PizzaController::class,'create']);
     Route::post('/pizze/create',[\App\Http\Controllers\PizzaController::class,'store']);
+    Route::get('/pizze/{name?}',[\App\Http\Controllers\PizzaController::class,'show']);
     Route::get('/insalatone',[\App\Http\Controllers\InsalatonaController::class,'index'])->name('insalatone');
     Route::get('/insalatone/{id?}/delete',[\App\Http\Controllers\InsalatonaController::class,'destroy']);
     Route::get('/insalatone/{id?}/edit',[\App\Http\Controllers\InsalatonaController::class,'edit']);
     Route::post('/insalatone/{id?}/edit',[\App\Http\Controllers\InsalatonaController::class,'update']);
     Route::get('/insalatone/create',[\App\Http\Controllers\InsalatonaController::class,'create']);
     Route::post('/insalatone/create',[\App\Http\Controllers\InsalatonaController::class,'store']);
+    Route::get('/insalatona/{name?}',[\App\Http\Controllers\InsalatonaController::class,'show']);
     Route::get('/users',[\App\Http\Controllers\UtenteController::class,'index'])->name('users');
     Route::get('/users/create',[\App\Http\Controllers\UtenteController::class,'create']);
     Route::post('/users/create',[\App\Http\Controllers\UtenteController::class,'store']);
@@ -60,7 +62,7 @@ Route::group(array('prefix'=>'admin','namespace'=>'Admin','middleware'=>'manager
     Route::get('/commenti/{id?}/edit',[\App\Http\Controllers\CommentiController::class,'edit']);
     Route::get('/commenti/create',[\App\Http\Controllers\CommentiController::class,'create']);
     Route::post('/commenti/{id?}/edit',[\App\Http\Controllers\CommentiController::class,'update']);
-    Route::post('/commenti/create',[\App\Http\Controllers\CommentiController::class,'store']);
+    Route::post('/comment',[\App\Http\Controllers\CommentiController::class,'newComment']);
     Route::get('/commenti/{id?}/delete',[\App\Http\Controllers\CommentiController::class,'destroy']);
 });
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddToCommentiTableUserId extends Migration
+class AddUserIdToPizzaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,14 @@ class AddToCommentiTableUserId extends Migration
      */
     public function up()
     {
-        Schema::table('commenti', function (Blueprint $table) {
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
-        });
+        if(Schema::hasColumn('pizza','user_id')){
+
+        }else{
+            Schema::table('pizza', function (Blueprint $table) {
+                $table->integer('user_id')->nullable();
+            });
+
+        }
     }
 
     /**
@@ -26,8 +30,8 @@ class AddToCommentiTableUserId extends Migration
      */
     public function down()
     {
-        Schema::table('commenti', function (Blueprint $table) {
-            //
+        Schema::table('pizza', function (Blueprint $table) {
+            $table->dropColumn('user_id');
         });
     }
 }

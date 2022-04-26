@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Pizze')
+@section('title','Insalatone')
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
@@ -7,7 +7,9 @@
                 <div class="card">
                     <div class="card-header">
                         {{ __('Insalatone') }}
-                        <span class="float-end"><a class="btn btn-success btn-sm" href="{{action([\App\Http\Controllers\InsalatonaController::class,'create'])}}"><i class="fa-solid fa-circle-plus"></i></a></span>
+                        <span class="float-end"><a class="btn btn-success btn-sm"
+                                                   href="{{action([\App\Http\Controllers\InsalatonaController::class,'create'])}}"><i
+                                    class="fa-solid fa-circle-plus"></i></a></span>
                     </div>
 
                     <div class="card-body">
@@ -23,7 +25,7 @@
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <td>Id</td>
+                                        <td>#</td>
                                         <td>Img</td>
                                         <td>Titolo</td>
                                         <td>Rate</td>
@@ -43,7 +45,8 @@
                                             </td>
                                             <td style="white-space: nowrap">
                                                 @if($insalatona->voti->count('rate') > 0)
-                                                    <i class="fa-solid fa-star gold"></i>{{($insalatona->voti->sum('rate')/$insalatona->voti->count('rate'))}}
+                                                    <i class="fa-solid fa-star gold"></i>
+                                                    {{number_format((float)$insalatona->voti->sum('rate')/$insalatona->voti->count('rate'),2,'.','')}}
                                                 @endif
                                             </td>
                                             <td>{{$insalatona->descrizione}}</td>
@@ -55,15 +58,20 @@
                                                     <span style="color: red">No</span>
                                                 @endif
                                             </td>
-                                            <td>
-                                                <form action="{{action([\App\Http\Controllers\InsalatonaController::class,'destroy'],$insalatona->id)}}" method="get">
+                                            <td style="white-space: nowrap">
+                                                <form class="float-lg-start me-1"
+                                                    action="{{action([\App\Http\Controllers\InsalatonaController::class,'destroy'],$insalatona->id)}}"
+                                                    method="get">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button onclick="return confirm('Sei sicuro di voler eliminare la insalatona: {{$insalatona->titolo}} ?')" class="btn btn-danger btn-sm" type="submit">
+                                                    <button
+                                                        onclick="return confirm('Sei sicuro di voler eliminare la insalatona: {{$insalatona->titolo}} ?')"
+                                                        class="btn btn-danger btn-sm" type="submit">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </form>
-                                                <a href="{{action([\App\Http\Controllers\CommentiController::class,'create'])}}"><i class="fa-solid fa-comment-sms fa fa-2x mt-2"></i></a>
+                                                    <a href="{{action([\App\Http\Controllers\InsalatonaController::class,'show'],$insalatona->titolo)}}"><i class="fa-solid fa-file-pen fa fa-2x mt-1"></i>
+                                                    </a>
                                             </td>
                                         </tr>
                                     @endforeach

@@ -16,7 +16,11 @@ class Pizza extends Model
     }
     public function voti()
     {
-        return $this->hasMany(Voti::class,'pizza_id','id');
+        return $this->hasMany(Voti::class,'pizza_id','id')->orderBy('rate','desc');
+    }
+    public function commenti()
+    {
+        return $this->morphMany(Commenti::class,'menu');
     }
     use HasFactory;
 }

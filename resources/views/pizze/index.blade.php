@@ -23,7 +23,7 @@
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <td>Id</td>
+                                        <td>#</td>
                                         <td>Img</td>
                                         <td>Titolo</td>
                                         <td>Rate</td>
@@ -43,7 +43,8 @@
                                             </td>
                                             <td style="white-space: nowrap">
                                                 @if($pizza->voti->count('rate') > 0)
-                                                    <i class="fa-solid fa-star gold"></i>{{($pizza->voti->sum('rate')/$pizza->voti->count('rate'))}}
+                                                    <i class="fa-solid fa-star gold"></i>
+                                                    {{number_format((float)$pizza->voti->sum('rate')/$pizza->voti->count('rate'),2,'.','')}}
                                                 @endif
                                             </td>
                                             <td>{{$pizza->descrizione}}</td>
@@ -55,14 +56,17 @@
                                                     <span style="color: red">No</span>
                                                 @endif
                                             </td>
-                                            <td>
-                                                <form action="{{action([\App\Http\Controllers\PizzaController::class,'destroy'],$pizza->id)}}" method="get">
+                                            <td style="white-space: nowrap">
+                                                <form class="float-lg-start me-1"
+                                                    action="{{action([\App\Http\Controllers\PizzaController::class,'destroy'],$pizza->id)}}" method="get">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button onclick="return confirm('Sei sicuro di voler eliminare la pizza: {{$pizza->titolo}} ?')" class="btn btn-danger btn-sm" type="submit">
                                                         <i class="fa-solid fa-trash-can"></i>
                                                     </button>
                                                 </form>
+                                                <a href="{{action([\App\Http\Controllers\PizzaController::class,'show'],$pizza->titolo)}}"><i class="fa-solid fa-file-pen fa fa-2x mt-1"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach

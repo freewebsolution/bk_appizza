@@ -24,7 +24,8 @@ class CommentFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'content'=>'required|min:5'
+            'testo'=>'required|min:5',
+            'voto'=>'required'
         ];
     }
 }

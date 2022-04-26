@@ -52,6 +52,7 @@ class User extends Authenticatable
         return $this->hasMany(Commenti::class);
     }
 
+
     public function voti()
     {
         return $this->belongsTo(Voti::class);

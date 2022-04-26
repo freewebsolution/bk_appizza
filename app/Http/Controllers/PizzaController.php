@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PizzaEditFormRequest;
 use App\Http\Requests\PizzaFormRequest;
+use App\Models\Commenti;
 use App\Models\Pizza;
+use App\Models\User;
+use App\Models\Voti;
 use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PizzaController extends Controller
 {
@@ -55,15 +59,28 @@ class PizzaController extends Controller
         return redirect('/admin/pizze')->with('status', 'Pizza aggiunta correttamente');
     }
 
+
     /**
      * Display the specified resource.
      *
      * @param \App\Models\Pizza $pizza
      * @return \Illuminate\Http\Response
      */
-    public function show(Pizza $pizza)
+    public function show($name)
     {
-
+        $pizza = Pizza::where(['titolo' => $name])->firstOrFail();
+        $commenti = $pizza
+            ->comments()
+            ->orderByRaw('IF(user_id = ?,1,0) DESC', [auth()->id()])
+            ->paginate(10);
+        $auth = Commenti::select('user_id')
+            ->where([
+                ['user_id', '=', Auth::id()],
+                ['pizza_id', '=', $pizza->id]
+            ])
+            ->first();
+        $voti = $pizza->voti()->get();
+        return view('pizze.show', compact('pizza', 'commenti', 'voti', 'auth'));
     }
 
     /**
@@ -92,7 +109,7 @@ class PizzaController extends Controller
         $pizza->descrizione = $request->get('descrizione');
         $pizza->prezzo = $request->get('prezzo');
         $pizza->inevidenza = $request->get('inevidenza');
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             $nomeImg = explode('/assets/pizze', $pizza->img);
             $nomeImg = $nomeImg[1];
             if (file_exists(public_path("assets/pizze/" . $nomeImg))) {
@@ -104,8 +121,7 @@ class PizzaController extends Controller
             $request->image->move(public_path('assets/pizze'), $imageName);
             $data = $imageName;
             $pizza->img = '/assets/pizze/' . $data;
-        }
-        else{
+        } else {
             $pizza->img = $request->get('img');
         }
 

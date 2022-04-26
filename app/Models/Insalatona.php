@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Insalatona extends Model
 {
@@ -18,5 +19,6 @@ class Insalatona extends Model
     {
         return $this->hasMany('App\models\Voti','insalatona_id','id');
     }
+
     use HasFactory;
 }

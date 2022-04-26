@@ -11,6 +11,7 @@ use App\Models\Voti;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PizzaController extends Controller
 {
@@ -21,7 +22,12 @@ class PizzaController extends Controller
      */
     public function index()
     {
-        $pizze = Pizza::paginate(10);
+
+        $pizze= Pizza::select('pizza.*')
+            ->join('voti', 'voti.pizza_id', '=', 'pizza.id')
+            ->groupBy('pizza.id')
+            ->orderByRaw('min(voti.rate) desc')
+            ->paginate(10);
         return view('pizze.index', compact('pizze'));
     }
 

@@ -19,7 +19,11 @@ class InsalatonaController extends Controller
      */
     public function index()
     {
-        $insalatone = Insalatona::paginate(10);
+        $insalatone= Insalatona::select('insalatona.*')
+            ->join('voti', 'voti.insalatona_id', '=', 'insalatona.id')
+            ->groupBy('insalatona.id')
+            ->orderByRaw('min(voti.rate) desc')
+            ->paginate(10);
         return view('insalatone.index', compact('insalatone'));
     }
 

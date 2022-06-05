@@ -5,7 +5,11 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CommentFormRequest;
 use App\Models\Commenti;
+use App\Models\Insalatona;
+use App\Models\Pizza;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 class CommentiApiController extends Controller
 {
@@ -16,7 +20,9 @@ class CommentiApiController extends Controller
      */
     public function index()
     {
-        $commenti = Commenti::all();
+        $commenti = Commenti::with('pizza', 'insalatona', 'user', 'voti')->distinct()->get();
+        $pizze = Pizza::with('voti')->distinct()->get();
+        $insalatone = Insalatona::with('voti')->distinct()->get();
         return $commenti;
     }
 
@@ -33,7 +39,7 @@ class CommentiApiController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(CommentFormRequest $request)
@@ -41,7 +47,7 @@ class CommentiApiController extends Controller
         $commento = new Commenti(array(
             'pizza_id' => $request->get('pizza_id'),
             'insalatona_id' => $request->get('insalatona_id'),
-            'content'=>$request->get('content')
+            'content' => $request->get('content')
         ));
         $commento->save();
         return $commento;
@@ -50,18 +56,23 @@ class CommentiApiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $commenti = Commenti::with('pizza', 'insalatona', 'user', 'voti')
+            ->where('slug_id','=',$slug)
+            ->orWhere('insalatona_id','=',$slug)
+            ->get();
+        return $commenti;
     }
+
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -72,8 +83,8 @@ class CommentiApiController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -84,7 +95,7 @@ class CommentiApiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

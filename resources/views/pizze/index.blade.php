@@ -37,7 +37,7 @@
                                     @foreach($pizze as $pizza)
                                         <tr>
                                             <td>{{$pizza->id}}</td>
-                                            <td><img width="100" height="100" src="{{$pizza->img}}" alt="img"></td>
+                                            <td><img class="img-fluid" src="{{$pizza->img}}" alt="img"></td>
                                             <td>
                                                 <a href="{{action([\App\Http\Controllers\PizzaController::class,'edit'],$pizza->id)}}">{{$pizza->titolo}}</a>
                                             </td>

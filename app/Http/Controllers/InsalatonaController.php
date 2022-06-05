@@ -19,11 +19,16 @@ class InsalatonaController extends Controller
      */
     public function index()
     {
-        $insalatone= Insalatona::select('insalatona.*')
-            ->join('voti', 'voti.insalatona_id', '=', 'insalatona.id')
-            ->groupBy('insalatona.id')
-            ->orderByRaw('min(voti.rate) desc')
-            ->paginate(10);
+        if('voti.insalatona_id' === 'insalatona.id'){
+            $insalatone = Insalatona::select('insalatona.*')
+                ->join('voti', 'voti.insalatona_id', '=', 'insalatona.id')
+                ->groupBy('insalatona.id')
+                ->orderByRaw('min(voti.rate) desc')
+                ->paginate(10);
+        } else {
+            $insalatone = Insalatona::paginate(10);
+        }
+
         return view('insalatone.index', compact('insalatone'));
     }
 
@@ -45,11 +50,13 @@ class InsalatonaController extends Controller
      */
     public function store(InsalatonaFormRequest $request)
     {
+        $slug = uniqId();
         $insalatona = new Insalatona(array(
             'titolo' => $request->get('titolo'),
             'descrizione' => $request->get('descrizione'),
             'prezzo' => $request->get('prezzo'),
             'inevidenza' => $request->get('inevidenza'),
+            'slug' => $slug
         ));
         $thumb = $_FILES['image']['name'];
         $thumb = substr($thumb, 0, strpos($thumb, "."));

@@ -39,7 +39,7 @@
                                     @foreach($insalatone as $insalatona)
                                         <tr>
                                             <td>{{$insalatona->id}}</td>
-                                            <td><img width="100" height="100" src="{{$insalatona->img}}" alt="img"></td>
+                                            <td><img class="img-fluid" src="{{$insalatona->img}}" alt="img"></td>
                                             <td>
                                                 <a href="{{action([\App\Http\Controllers\InsalatonaController::class,'edit'],$insalatona->id)}}">{{$insalatona->titolo}}</a>
                                             </td>

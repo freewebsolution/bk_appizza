@@ -7,8 +7,14 @@ use App\Models\Pizza;
 
 class PizzaApiController extends Controller
 {
-    public function index(){
-        $pizze = Pizza::all();
+    public function index()
+    {
+        $pizze = Pizza::with('voti', 'comments')->distinct()->get();
         return $pizze;
-}
+    }
+
+    public function show ($id) {
+       $pizza = Pizza::whereId($id)->with('voti','comments')->firstOrfail();
+       return $pizza;
+    }
 }

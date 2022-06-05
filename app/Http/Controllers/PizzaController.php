@@ -22,14 +22,19 @@ class PizzaController extends Controller
      */
     public function index()
     {
+        if ('voti.pizza_id' === 'pizza.id') {
+            $pizze = Pizza::select('pizza.*')
+                ->join('voti', 'voti.pizza_id', '=', 'pizza.id')
+                ->groupBy('pizza.id')
+                ->orderByRaw('min(voti.rate) desc')
+                ->paginate(10);
+        } else {
+            $pizze = Pizza::paginate(10);
+        }
 
-        $pizze= Pizza::select('pizza.*')
-            ->join('voti', 'voti.pizza_id', '=', 'pizza.id')
-            ->groupBy('pizza.id')
-            ->orderByRaw('min(voti.rate) desc')
-            ->paginate(10);
         return view('pizze.index', compact('pizze'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -49,11 +54,13 @@ class PizzaController extends Controller
      */
     public function store(PizzaFormRequest $request)
     {
+        $slug = uniqId();
         $pizza = new Pizza(array(
             'titolo' => $request->get('titolo'),
             'descrizione' => $request->get('descrizione'),
             'prezzo' => $request->get('prezzo'),
             'inevidenza' => $request->get('inevidenza'),
+            'slug' => $slug
         ));
         $thumb = $_FILES['image']['name'];
         $thumb = substr($thumb, 0, strpos($thumb, "."));
